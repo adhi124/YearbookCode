@@ -18,39 +18,36 @@
 
     </head>
     <body> 
-    
-
-<div id='cssmenu'>
-    <!--center><img src="favicon.png"></img></center-->
-    
-<ul>
-   <li class='active has-sub'><a href='#'><span>Groups</span></a>
-      <ul>
-         <li class="last" ng-repeat="group in groups track by $index">
-            <a><span ng-click="switchGroup(group, $index)">{{ group }}</span></a>
-          </li>
-      </ul>            
-    </li>
-   <li class='active has-sub'><a href='#'><span>Filter</span></a>
-      <ul>
-         <li class="last"><a><input id="searchbar" type="text"></input></a></li>
-          <li class="last"><a><span ng-click="search()">Search Tag</span></a></li>
-          <li class="last"><a><span ng-click="clearTags()">Clear Tags</span></a></li>
-      </ul>
-   </li>
-   <li class='active has-sub'><a href='#'><span>Tags</span></a>
-      <ul>          
-         <li class="last" ng-repeat="tag in currentTags"><a><span>{{tag}}</span></a></li>
-      </ul>
-   </li>
-   <li class='active has-sub'><a href='#'><span>Account</span></a>
-        <ul>
-            <li class='last'><a><span id="logoutButton">Sign Out</span></a></li>
-       </ul>
-   </li>
-   <li class='last'><a href='#'><span>Order</span></a></li>
-</ul>
-</div>    
+        
+        <div id='cssmenu'>
+            <ul>
+            <li class='active has-sub'><a href='#'><span>Groups</span></a>
+                <ul>
+                    <li class="last" ng-repeat="group in groups track by $index">
+                        <a><span ng-click="switchGroup(group, $index)">{{ group }}</span></a>
+                    </li>
+                </ul>            
+            </li>
+            <li class='active has-sub'><a href='#'><span>Filter</span></a>
+                <ul>
+                    <li class="last"><a><input id="searchbar" type="text"></input></a></li>
+                    <li class="last"><a><span ng-click="search()">Search Tag</span></a></li>
+                    <li class="last"><a><span ng-click="clearTags()">Clear Tags</span></a></li>
+                </ul>
+            </li>
+            <li class='active has-sub'><a href='#'><span>Tags</span></a>
+            <ul>          
+                <li class="last" ng-repeat="tag in currentTags"><a><span>{{tag}}</span></a></li>
+            </ul>
+            </li>
+                <li class='active has-sub'><a href='#'><span>Account</span></a>
+                <ul>
+                    <li class='last'><a><span id="logoutButton">Sign Out</span></a></li>
+                </ul>
+                </li>
+                <li class='last'><a href='#'><span>Order</span></a></li>
+            </ul>
+        </div>    
 
         <div id="grid">
             <div ng-repeat="photo in photos" class="pr">
