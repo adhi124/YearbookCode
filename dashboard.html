@@ -1,0 +1,72 @@
+<!doctype html>
+<html ng-app="dashboard" ng-controller="dashCon">
+    <head>
+        <meta charset="utf-8">
+        <meta name="keywords" content="">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" type="image/png" href="favicon.png">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+        <script src="js/dashboardcontroller.js"></script>
+        <link rel="stylesheet" href="css/dashboard.css">
+        <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+        <script src="js/sidebarscript.js"></script>
+        
+        <title>Dashboard</title>
+        
+        <script src="https://www.gstatic.com/firebasejs/4.5.1/firebase.js"></script>
+
+    </head>
+    <body> 
+    
+
+<div id='cssmenu'>
+    <!--center><img src="favicon.png"></img></center-->
+    
+<ul>
+   <li class='active has-sub'><a href='#'><span>Groups</span></a>
+      <ul>
+         <li class="last" ng-repeat="group in groups track by $index">
+            <a><span ng-click="switchGroup(group, $index)">{{ group }}</span></a>
+          </li>
+      </ul>            
+    </li>
+   <li class='active has-sub'><a href='#'><span>Filter</span></a>
+      <ul>
+         <li class="last"><a><input id="searchbar" type="text"></input></a></li>
+          <li class="last"><a><span ng-click="search()">Search Tag</span></a></li>
+          <li class="last"><a><span ng-click="clearTags()">Clear Tags</span></a></li>
+      </ul>
+   </li>
+   <li class='active has-sub'><a href='#'><span>Tags</span></a>
+      <ul>          
+         <li class="last" ng-repeat="tag in currentTags"><a><span>{{tag}}</span></a></li>
+      </ul>
+   </li>
+   <li class='active has-sub'><a href='#'><span>Account</span></a>
+        <ul>
+            <li class='last'><a><span id="logoutButton">Sign Out</span></a></li>
+       </ul>
+   </li>
+   <li class='last'><a href='#'><span>Order</span></a></li>
+</ul>
+</div>    
+
+        <div id="grid">
+            <div ng-repeat="photo in photos" class="pr">
+                <img ng-src="{{ photo.url }}" ng-click="alert(photo.url)" class="pi"></img>
+                <div class="info">
+                <p>{{ photo.title }}<br/>
+                Tags: {{ photo.tagString }}<br/>
+                <!--button ng-click=flag(photo.url)>flag</button-->
+                </div>
+                <div class="flag">
+                    <img src="img/flag.png" class="flagimg" ng-click="flag(photo.url)"></img>
+                </div>
+            </div>
+        </div>
+
+    </body>
+
+    <script src="js/dashboard.js"></script>
+</html>
