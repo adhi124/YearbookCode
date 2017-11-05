@@ -17,5 +17,9 @@ $('#cssmenu li.has-sub>a').on('click', function(){
 			//element.siblings('li').find('ul').slideUp();
 		}
 	});
+    setTimeout(function() {
+        $("#groupsButton").trigger('click');
+    },10);
 });
+    
 } )( jQuery );

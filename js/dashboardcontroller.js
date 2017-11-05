@@ -1,20 +1,14 @@
 var dashboard = angular.module( "dashboard", [] );
 dashboard.controller('dashCon', function($scope) {
-    $scope.photosPerm = [
+    $scope.photosPerm = [];
 
-    ];
-
-    $scope.photos = [
-
-    ];
+    $scope.photos = [];
     
-    $scope.currentTags = [
-        
-    ];
+    $scope.currentTags = [];
 
-    $scope.groups = [
-
-    ];
+    $scope.allTags = [];
+    
+    $scope.groups = [];
 
     $scope.alert = function(url) {
         window.open(url); 
@@ -49,6 +43,20 @@ dashboard.controller('dashCon', function($scope) {
     $scope.search = function() {
         var input = document.getElementById("searchbar");
         var tag = input.value;
+        $scope.currentTags.push(tag);
+        var newPhotos = [];
+        var photoList = $scope.photos;
+        for (var i = 0; i < photoList.length; i++) {
+            var photo = photoList[i];
+            var tags = photo.tags;
+            if (tags.includes(tag)) {
+                newPhotos.push(photo);
+            }
+        }
+        $scope.photos = newPhotos;
+    }
+    
+    $scope.searchTag = function(tag) {
         $scope.currentTags.push(tag);
         var newPhotos = [];
         var photoList = $scope.photos;

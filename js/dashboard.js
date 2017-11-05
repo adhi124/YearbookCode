@@ -41,6 +41,7 @@ firebase.auth().onAuthStateChanged(user => {
                 
                 scope.photos = [];
                 scope.photosPerm = [];
+                scope.allTags = [];
                                 
                 for (var i = 0; i < photoLength; i++) {
                     var photoRef = database.ref('Photos/'+photoNames[i]);
@@ -48,6 +49,11 @@ firebase.auth().onAuthStateChanged(user => {
                         var photoJson = snapshot.val();
                         var tagString = "";
                         for (tag in photoJson.tags) {
+                            if (scope.allTags.includes(photoJson.tags[tag])) {
+                                
+                            }else {
+                                scope.allTags.push(photoJson.tags[tag]);
+                            }
                             if (tagString != "") {
                                 tagString = tagString + ", " + photoJson.tags[tag];  
                             }else {

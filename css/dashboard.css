@@ -277,11 +277,11 @@ div#grid {
 }
 #cssmenu ul > li.has-sub.open > a::after {
   opacity: 1;
-  bottom: -13px;
+  bottom: -0px;
 }
 #cssmenu ul > li.has-sub.open > a::before {
   opacity: 1;
-  bottom: -12px;
+  bottom: -0px;
 }
 #cssmenu ul ul {
   display: none;
