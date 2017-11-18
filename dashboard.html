@@ -32,7 +32,7 @@
             </li>                
             <li class='active has-sub'><a href='#'><span>Groups</span></a>
                 <ul>
-                    <li class="last" ng-repeat="group in groups track by $index" ng-click="switchGroup(group, $index)">
+                    <li class="last" ng-repeat="group in groupNames track by $index" ng-click="switchGroup(group, $index)">
                         <a><span>{{ group }}</span></a>
                     </li>
                 </ul>            

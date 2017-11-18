@@ -1,10 +1,10 @@
 var config = {
-    apiKey: "AIzaSyCiFUwt7sjio-wd-iM0N2d9hNy3P5Tac6Q",
-    authDomain: "fir-web-demo-1e811.firebaseapp.com",
-    databaseURL: "https://fir-web-demo-1e811.firebaseio.com",
-    projectId: "fir-web-demo-1e811",
-    storageBucket: "fir-web-demo-1e811.appspot.com",
-    messagingSenderId: "631543468405"
+    apiKey: "AIzaSyAyTd1DUVUMKki5XAvJ-k_b3heUE4xkqCY",
+    authDomain: "yearbook-88994.firebaseapp.com",
+    databaseURL: "https://yearbook-88994.firebaseio.com",
+    projectId: "yearbook-88994",
+    storageBucket: "yearbook-88994.appspot.com",
+    messagingSenderId: "91761954072"
 };
 firebase.initializeApp(config);
 

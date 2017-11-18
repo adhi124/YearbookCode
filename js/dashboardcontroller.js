@@ -9,6 +9,8 @@ dashboard.controller('dashCon', function($scope) {
     $scope.allTags = [];
     
     $scope.groups = [];
+    
+    $scope.groupNames = [];
 
     $scope.alert = function(url) {
         window.open(url); 
@@ -24,7 +26,7 @@ dashboard.controller('dashCon', function($scope) {
                     var groupsList = snapshot.val();
                     var newGroupsList = groupsList;
                     var currentGroup = groupsList[0];
-                    newGroupsList[0] = groupName;
+                    newGroupsList[0] = groupsList[index];
                     newGroupsList[index] = currentGroup;
                     groupsListRef.set(newGroupsList);
                 });                     

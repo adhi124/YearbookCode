@@ -1,13 +1,14 @@
 // Initialize Firebase
 var config = {
-    apiKey: "AIzaSyCiFUwt7sjio-wd-iM0N2d9hNy3P5Tac6Q",
-    authDomain: "fir-web-demo-1e811.firebaseapp.com",
-    databaseURL: "https://fir-web-demo-1e811.firebaseio.com",
-    projectId: "fir-web-demo-1e811",
-    storageBucket: "fir-web-demo-1e811.appspot.com",
-    messagingSenderId: "631543468405"
+    apiKey: "AIzaSyAyTd1DUVUMKki5XAvJ-k_b3heUE4xkqCY",
+    authDomain: "yearbook-88994.firebaseapp.com",
+    databaseURL: "https://yearbook-88994.firebaseio.com",
+    projectId: "yearbook-88994",
+    storageBucket: "yearbook-88994.appspot.com",
+    messagingSenderId: "91761954072"
 };
 firebase.initializeApp(config);
+
 
 var logoutbtn = document.getElementById('logoutButton');
 var database = firebase.database();
@@ -25,7 +26,17 @@ firebase.auth().onAuthStateChanged(user => {
         var groupsListRef = database.ref('Users/'+user.uid+'/groupIds');
         groupsListRef.on('value', function(snapshot) {
             var groupsList = snapshot.val();
+            var groupsNameList = [];
+            console.log(groupsList);
+            for (group in groupsList) {
+                console.log(groupsList[group]);
+                var groupRef = database.ref('Groups/'+groupsList[group]);
+                groupRef.on('value', function(groupSnapshot) {
+                    groupsNameList.push(groupSnapshot.val().title);
+                });
+            }
             scope.$apply(function(){
+                scope.groupNames = groupsNameList;
                 scope.groups = groupsList;
             })   
         });
@@ -48,21 +59,25 @@ firebase.auth().onAuthStateChanged(user => {
                     photoRef.on('value', function(snapshot) {
                         var photoJson = snapshot.val();
                         var tagString = "";
-                        for (tag in photoJson.tags) {
-                            if (scope.allTags.includes(photoJson.tags[tag])) {
-                                
-                            }else {
-                                scope.allTags.push(photoJson.tags[tag]);
+                        var newTags = [];
+                        if (photoJson.taggedMembers != null) {
+                            for (tag in photoJson.taggedMembers) {
+                                if (scope.allTags.includes(photoJson.taggedMembers[tag])) {
+
+                                }else {
+                                    scope.allTags.push(photoJson.taggedMembers[tag]);
+                                }
+                                if (tagString != "") {
+                                    tagString = tagString + ", " + photoJson.taggedMembers[tag];  
+                                }else {
+                                    tagString = tagString + photoJson.taggedMembers[tag];
+                                }
                             }
-                            if (tagString != "") {
-                                tagString = tagString + ", " + photoJson.tags[tag];  
-                            }else {
-                                tagString = tagString + photoJson.tags[tag];
-                            }
+                            newTags = photoJson.taggedMembers;
                         }
                         var newImage = new function() {
                             this.url = photoJson.imageUrl;
-                            this.tags = photoJson.tags;
+                            this.tags = newTags;
                             this.title = photoJson.caption;
                             this.tagString = tagString;
                         }
