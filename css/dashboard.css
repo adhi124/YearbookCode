@@ -207,7 +207,7 @@ div#grid {
 #cssmenu > ul > li:last-child > a {
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-  border-bottom: 1px solid #C266CE;
+  border-bottom: 1px solid #664BC9;
 }
 #cssmenu > ul > li:hover > a,
 #cssmenu > ul > li.open > a,
