@@ -89,21 +89,22 @@ dashboard.controller('dashCon', function($scope) {
                                     var guRef = database.ref('Groups/'+currentGroup+'/memberIds');
                                     guRef.once('value').then(function(gurs) {
                                         var prevGroups = grs.val();
-                                        console.log(prevGroups);
-                                        prevGroups.push(currentGroup);
-                                        console.log(prevGroups);
-                                        ugRef.set(prevGroups);
-
                                         var currMembers = gurs.val();
-                                        console.log(currMembers);
-                                        currMembers.push(uidToAdd);
-                                        console.log(currMembers);
-                                        guRef.set(currMembers);
+                                        
+                                        if (!currMembers.contains(uidToAdd)) {
+                                            prevGroups.push(currentGroup);
+                                            ugRef.set(prevGroups);
+
+                                            currMembers.push(uidToAdd);
+                                            guRef.set(currMembers);
+                                        }else {
+                                            window.alert("User is already in this group");                     
+                                        }
                                         //location.reload();
                                     });                                
                                 });
                             }else {
-                                window.alert("Member is already in this group");   
+                                window.alert("User is already in this group");   
                             }
                         }
                     }
