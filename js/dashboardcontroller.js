@@ -91,7 +91,7 @@ dashboard.controller('dashCon', function($scope) {
                                         var prevGroups = grs.val();
                                         var currMembers = gurs.val();
                                         
-                                        if (!currMembers.contains(uidToAdd)) {
+                                        if (!currMembers.includes(uidToAdd)) {
                                             prevGroups.push(currentGroup);
                                             ugRef.set(prevGroups);
 
