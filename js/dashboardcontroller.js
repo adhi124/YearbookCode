@@ -99,7 +99,7 @@ dashboard.controller('dashCon', function($scope) {
                                     currMembers.push(uidToAdd);
                                     console.log(currMembers);
                                     guRef.set(currMembers);
-                                    location.reload();
+                                    //location.reload();
                                 });                                
                             });
                             
