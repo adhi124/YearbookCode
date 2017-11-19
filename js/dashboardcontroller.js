@@ -83,26 +83,28 @@ dashboard.controller('dashCon', function($scope) {
                             console.log(email);
                             var uidToAdd = cuser;
                             console.log(uidToAdd);
-                            
-                            var ugRef = database.ref('Users/'+uidToAdd+'/groupIds');
-                            ugRef.once('value').then(function(grs) {   
-                                var guRef = database.ref('Groups/'+currentGroup+'/memberIds');
-                                guRef.once('value').then(function(gurs) {
-                                    var prevGroups = grs.val();
-                                    console.log(prevGroups);
-                                    prevGroups.push(currentGroup);
-                                    console.log(prevGroups);
-                                    ugRef.set(prevGroups);
-                                    
-                                    var currMembers = gurs.val();
-                                    console.log(currMembers);
-                                    currMembers.push(uidToAdd);
-                                    console.log(currMembers);
-                                    guRef.set(currMembers);
-                                    //location.reload();
-                                });                                
-                            });
-                            
+                            if (uidToAdd != user.uid) {
+                                var ugRef = database.ref('Users/'+uidToAdd+'/groupIds');
+                                ugRef.once('value').then(function(grs) {   
+                                    var guRef = database.ref('Groups/'+currentGroup+'/memberIds');
+                                    guRef.once('value').then(function(gurs) {
+                                        var prevGroups = grs.val();
+                                        console.log(prevGroups);
+                                        prevGroups.push(currentGroup);
+                                        console.log(prevGroups);
+                                        ugRef.set(prevGroups);
+
+                                        var currMembers = gurs.val();
+                                        console.log(currMembers);
+                                        currMembers.push(uidToAdd);
+                                        console.log(currMembers);
+                                        guRef.set(currMembers);
+                                        //location.reload();
+                                    });                                
+                                });
+                            }else {
+                                window.alert("You are already in this group");   
+                            }
                         }
                     }
                 });                   
@@ -139,37 +141,40 @@ dashboard.controller('dashCon', function($scope) {
     }
     
     $scope.rmMember = function(member, index) {
-        var database = firebase.database();
-        firebase.auth().onAuthStateChanged(user => {
-            if(user) {
-                var groupRef = database.ref('Users/'+user.uid+'/groupIds');
-                groupRef.once('value').then(function(snapshot) {
-                    var currentGroups = snapshot.val();
-                    var currentGroup = currentGroups[0];
-                    var gmRef = database.ref('Groups/'+currentGroup+'/memberIds');
-                    gmRef.once('value').then(function(ms) {
-                        var members = ms.val();
-                        var rmId = members[index];
-                        if (user != rmId) {
-                            members.splice(index,1);
-                            var rmMRef = database.ref('Users/'+rmId+'/groupIds');
-                            rmMRef.once('value').then(function(rmms) {
-                                var allGroups = rmms.val();
-                                for (g in allGroups) {
-                                    if (currentGroup === allGroups[g]) {
-                                        allGroups.splice(g,1);
+        var rem = confirm("Remove member from group?");
+        if (rem == true) {
+            var database = firebase.database();
+            firebase.auth().onAuthStateChanged(user => {
+                if(user) {
+                    var groupRef = database.ref('Users/'+user.uid+'/groupIds');
+                    groupRef.once('value').then(function(snapshot) {
+                        var currentGroups = snapshot.val();
+                        var currentGroup = currentGroups[0];
+                        var gmRef = database.ref('Groups/'+currentGroup+'/memberIds');
+                        gmRef.once('value').then(function(ms) {
+                            var members = ms.val();
+                            var rmId = members[index];
+                            if (user != rmId) {
+                                members.splice(index,1);
+                                var rmMRef = database.ref('Users/'+rmId+'/groupIds');
+                                rmMRef.once('value').then(function(rmms) {
+                                    var allGroups = rmms.val();
+                                    for (g in allGroups) {
+                                        if (currentGroup === allGroups[g]) {
+                                            allGroups.splice(g,1);
+                                        }
                                     }
-                                }
-                                rmMRef.set(allGroups);
-                                gmRef.set(members);
-                            });
-                        }else {
-                            window.alert("Cannot Remove Yourself from Group");   
-                        }
-                    });
-                });                     
-            }
-        });       
+                                    rmMRef.set(allGroups);
+                                    gmRef.set(members);
+                                });
+                            }else {
+                                window.alert("Cannot Remove Yourself from Group");   
+                            }
+                        });
+                    });                     
+                }
+            }); 
+        }
     }
     
     $scope.dispMems = function() {
