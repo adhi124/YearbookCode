@@ -103,7 +103,7 @@ dashboard.controller('dashCon', function($scope) {
                                     });                                
                                 });
                             }else {
-                                window.alert("You are already in this group");   
+                                window.alert("Member is already in this group");   
                             }
                         }
                     }
