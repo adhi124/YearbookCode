@@ -9,8 +9,8 @@ var config = {
 };
 firebase.initializeApp(config);
 
-
 var logoutbtn = document.getElementById('logoutButton');
+var downloadbtn = document.getElementById('downloadButton');
 var database = firebase.database();
 
 logoutbtn.addEventListener('click', e=> {
@@ -27,9 +27,7 @@ firebase.auth().onAuthStateChanged(user => {
         groupsListRef.on('value', function(snapshot) {
             var groupsList = snapshot.val();
             var groupsNameList = [];
-            console.log(groupsList);
             for (group in groupsList) {
-                console.log(groupsList[group]);
                 var groupRef = database.ref('Groups/'+groupsList[group]);
                 groupRef.on('value', function(groupSnapshot) {
                     groupsNameList.push(groupSnapshot.val().title);

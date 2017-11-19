@@ -76,4 +76,12 @@ dashboard.controller('dashCon', function($scope) {
         $scope.currentTags = [];
         $scope.photos = $scope.photosPerm;   
     }
+    
+    $scope.download = function() {
+        var urls = [];
+        for (photo in $scope.photos) {
+            urls.push($scope.photos[photo].url);
+        }
+        console.log(urls);
+    }
 });
