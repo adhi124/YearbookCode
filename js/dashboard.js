@@ -9,6 +9,8 @@ var config = {
 };
 firebase.initializeApp(config);
 
+console.log("Welcome master, to Yearbook Web. We shall guide you to your groups quickly and without further delay");
+
 var logoutbtn = document.getElementById('logoutButton');
 var downloadbtn = document.getElementById('downloadButton');
 var database = firebase.database();
