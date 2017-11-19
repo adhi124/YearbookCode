@@ -1,37 +1,38 @@
 var dashboard = angular.module( "dashboard", [] );
 dashboard.controller('dashCon', function($scope) {
     $scope.photosPerm = [];
-
     $scope.photos = [];
-    
     $scope.currentTags = [];
-
     $scope.allTags = [];
-    
     $scope.groups = [];
-    
     $scope.groupNames = [];
+    $scope.groupMembers = [];
+    $scope.groupMemberNames = [];
 
     $scope.alert = function(url) {
         window.open(url); 
     }
 
     $scope.switchGroup = function(groupName, index) {
-        $scope.currentTags = [];
-        var database = firebase.database();
-        firebase.auth().onAuthStateChanged(user => {
-            if(user) {
-                var groupsListRef = database.ref('Users/'+user.uid+'/groupIds');
-                groupsListRef.once('value').then(function(snapshot) {
-                    var groupsList = snapshot.val();
-                    var newGroupsList = groupsList;
-                    var currentGroup = groupsList[0];
-                    newGroupsList[0] = groupsList[index];
-                    newGroupsList[index] = currentGroup;
-                    groupsListRef.set(newGroupsList);
-                });                     
-            }
-        });
+        if (index != 0) {
+            $scope.currentTags = [];
+            $scope.groupMembers = [];
+            $scope.groupMemberNames = [];
+            var database = firebase.database();
+            firebase.auth().onAuthStateChanged(user => {
+                if(user) {
+                    var groupsListRef = database.ref('Users/'+user.uid+'/groupIds');
+                    groupsListRef.once('value').then(function(snapshot) {
+                        var groupsList = snapshot.val();
+                        var newGroupsList = groupsList;
+                        var currentGroup = groupsList[0];
+                        newGroupsList[0] = groupsList[index];
+                        newGroupsList[index] = currentGroup;
+                        groupsListRef.set(newGroupsList);
+                    });                     
+                }
+            });
+        }
     }
 
     $scope.flag = function(url) {
@@ -56,6 +57,58 @@ dashboard.controller('dashCon', function($scope) {
             }
         }
         $scope.photos = newPhotos;
+    }
+    
+    $scope.addmember = function() {
+        firebase.auth().onAuthStateChanged(user => {
+            if(user) {
+                var memberinput = document.getElementById('membersearchbar');
+                var email = memberinput.value;
+                
+                var database = firebase.database();
+                
+                var userRef = database.ref('Users');
+                userRef.once('value').then(function(urs) {
+                    
+                    var uid = user.uid;
+                    
+                    var users = urs.val();
+                    
+                    var currentGroups = users[uid].groupIds;
+                    
+                    var currentGroup = currentGroups[0];
+                    
+                    for (cuser in users) {
+                        if (email === users[cuser].email) {
+                            console.log(email);
+                            var uidToAdd = cuser;
+                            console.log(uidToAdd);
+                            
+                            var ugRef = database.ref('Users/'+uidToAdd+'/groupIds');
+                            ugRef.once('value').then(function(grs) {   
+                                var guRef = database.ref('Groups/'+currentGroup+'/memberIds');
+                                guRef.once('value').then(function(gurs) {
+                                    var prevGroups = grs.val();
+                                    console.log(prevGroups);
+                                    prevGroups.push(currentGroup);
+                                    console.log(prevGroups);
+                                    ugRef.set(prevGroups);
+                                    
+                                    var currMembers = gurs.val();
+                                    console.log(currMembers);
+                                    currMembers.push(uidToAdd);
+                                    console.log(currMembers);
+                                    guRef.set(currMembers);
+                                    location.reload();
+                                });                                
+                            });
+                            
+                        }
+                    }
+                });                   
+            }
+        });
+
     }
     
     $scope.searchTag = function(tag) {
@@ -84,4 +137,43 @@ dashboard.controller('dashCon', function($scope) {
         }
         console.log(urls);
     }
+    
+    $scope.rmMember = function(member, index) {
+        var database = firebase.database();
+        firebase.auth().onAuthStateChanged(user => {
+            if(user) {
+                var groupRef = database.ref('Users/'+user.uid+'/groupIds');
+                groupRef.once('value').then(function(snapshot) {
+                    var currentGroups = snapshot.val();
+                    var currentGroup = currentGroups[0];
+                    var gmRef = database.ref('Groups/'+currentGroup+'/memberIds');
+                    gmRef.once('value').then(function(ms) {
+                        var members = ms.val();
+                        var rmId = members[index];
+                        if (user != rmId) {
+                            members.splice(index,1);
+                            var rmMRef = database.ref('Users/'+rmId+'/groupIds');
+                            rmMRef.once('value').then(function(rmms) {
+                                var allGroups = rmms.val();
+                                for (g in allGroups) {
+                                    if (currentGroup === allGroups[g]) {
+                                        allGroups.splice(g,1);
+                                    }
+                                }
+                                rmMRef.set(allGroups);
+                                gmRef.set(members);
+                            });
+                        }else {
+                            window.alert("Cannot Remove Yourself from Group");   
+                        }
+                    });
+                });                     
+            }
+        });       
+    }
+    
+    $scope.dispMems = function() {
+        
+    }
+    $scope.dispMems();
 });

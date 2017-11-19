@@ -37,16 +37,29 @@
                         </li>
                     </ul>            
                 </li>
+                <li class='active has-sub' ng-click="dispMems()"><a href='#'><span>Members</span></a>
+                    <ul>
+                        <li class="last"><a>
+                        <input id="membersearchbar" type="text" placeholder="Email" style="padding: 10px; border: 2px solid #ccc"></input>
+                        <span ng-click="addmember()" style="float:right; margin-right:10px; padding-top: 5%;">Add Member</span>
+                        </a></li>
+                    </ul>
+                    <ul>
+                        <li class="last" ng-repeat="member in groupMemberNames track by $index" ng-click="rmMember(member, $index)">
+                            <a><span>{{ member }}</span></a>
+                        </li>
+                    </ul>            
+                </li>
                 <li class='active has-sub'><a href='#'><span>View Tags</span></a>
-                <ul>          
-                    <li class="last" ng-repeat="tag in allTags" ng-click="searchTag(tag)"><a><span>{{tag}}</span></a></li>
-                    <li class="last" ng-click="clearTags()"><a><span>Clear Tags</span></a></li>
-                </ul>
+                    <ul>          
+                        <li class="last" ng-repeat="tag in allTags" ng-click="searchTag(tag)"><a><span>{{tag}}</span></a></li>
+                        <li class="last" ng-click="clearTags()"><a><span>Clear Tags</span></a></li>
+                    </ul>
                 </li>
                 <li class='active has-sub'><a href='#'><span>Account</span></a>
-                <ul>
-                    <li class='last' id="logoutButton"><a><span>Sign Out</span></a></li>
-                </ul>
+                    <ul>
+                        <li class='last' id="logoutButton"><a><span>Sign Out</span></a></li>
+                    </ul>
                 </li>
                 <li class='last'><a href='#'><span>Order</span></a></li>
                 <li class='last' ng-click="download()"><a href='#'><span>Download</span></a></li>
